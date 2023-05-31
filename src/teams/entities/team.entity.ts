@@ -1,6 +1,6 @@
 import { Form } from "src/forms/entities/form.entity";
 import { Person } from "src/persons/entities/person.entity";
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Team {
@@ -11,9 +11,11 @@ export class Team {
   name: string;
 
   @OneToOne(() => Person, person => person.team)
+  @JoinColumn()
   rh: Person;
 
   @OneToOne(() => Person, person => person.team)
+  @JoinColumn()
   manager: Person;
 
   @OneToMany(() => Person, person => person.team)

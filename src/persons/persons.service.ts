@@ -14,12 +14,12 @@ export class PersonsService {
   async getAllFreeRh() {
     try {
       const rhs =  await this.personRepository.find({
-        relations: ["person.team"],
+        relations: ["team"],
         where: {
           role: Role.RH,
         }
       })
-      return rhs.filter(person => person.team);
+      return rhs.filter(person => !person.team);
     } catch (error) {
       console.log(error)
     }

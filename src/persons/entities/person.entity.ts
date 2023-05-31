@@ -28,7 +28,7 @@ export class Person {
   @Column({nullable: true})
   photo: string;
 
-  @Column({nullable: true})
+  @Column({nullable: true, type: "varchar"})
   role: Role;
 
   @ManyToOne(() => Team)

@@ -6,6 +6,7 @@ import { Repository } from "typeorm";
 import { Person } from "src/persons/entities/person.entity";
 import * as bcrypt from 'bcrypt';
 import { ReturnLoginDto } from "./returnLogin.dto";
+import { Role } from "src/constants/role.type";
 
 @Injectable()
 export class AuthService {
@@ -22,7 +23,7 @@ export class AuthService {
           email: loginDto.email
         }
       });
-      if(user && bcrypt.compare(loginDto.password, user.password)) {
+      if(user && await bcrypt.compare(loginDto.password, user.password)) {
         return {
           person: {
             ...user,
@@ -53,7 +54,7 @@ export class AuthService {
       } else {
         return await this.personRepository.save({
           ...registerDto,
-          role: 0
+          password: await bcrypt.hash(registerDto.password, 10)
         });
       }
     } catch (error) {

@@ -27,8 +27,8 @@ export class TeamsController {
     return this.teamsService.update(+id, updateTeamDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.teamsService.remove(+id);
+  @Get("by-member-id/:memberId")
+  findOneByMemberId(@Param("memberId") memberId: number) {
+    return this.teamsService.findOneByMemberId(memberId);
   }
 }

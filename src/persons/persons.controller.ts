@@ -5,12 +5,12 @@ import { PersonsService } from './persons.service';
 export class PersonsController {
   constructor(private readonly personsService: PersonsService) {}
   
-  @Get("/all-free-rh")
+  @Get("all-free-rh")
   getAllFreeRh() {
     return this.personsService.getAllFreeRh();
   }
 
-  @Get("find-all")
+  @Get()
   findAll() {
     return this.personsService.findAll();
   }
