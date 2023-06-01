@@ -19,6 +19,7 @@ export class AuthService {
   async login(loginDto: LoginDto) : Promise<ReturnLoginDto> {
     try {
       const user = await this.personRepository.findOne({
+        relations: ["team"],
         where: {
           email: loginDto.email
         }

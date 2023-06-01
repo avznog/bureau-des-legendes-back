@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFormDto } from './dto/create-form.dto';
-import { UpdateFormDto } from './dto/update-form.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Form } from './entities/form.entity';
 
 @Injectable()
 export class FormsService {
-  create(createFormDto: CreateFormDto) {
-    return 'This action adds a new form';
-  }
+  constructor(
+    @InjectRepository(Form)
+    private readonly formRepository: Repository<Form>
+  ) {}
 
-  findAll() {
-    return `This action returns all forms`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} form`;
-  }
-
-  update(id: number, updateFormDto: UpdateFormDto) {
-    return `This action updates a #${id} form`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} form`;
+  async byTeamId(teamId: number) {
+    try {
+      return await this.formRepository.find({
+        where: {
+          team: {
+            id: teamId
+          }
+        }
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
