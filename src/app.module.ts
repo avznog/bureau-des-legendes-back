@@ -24,10 +24,10 @@ import { ConfigModule } from '@nestjs/config';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST || "192.168.0.244",
-      port: +process.env.POSTGRES_PORT,
+      port: +process.env.POSTGRES_PORT ,
       username: process.env.POSTGRES_USER || "postgres",
       password: process.env.POSTGRES_PASSWORD || "postgres",
-      database: process.env.POSTGRES_DATABASE || "dev2",
+      database: process.env.POSTGRES_DATABASE || "bureaudeslegendes",
       synchronize: true,
       autoLoadEntities: true,
       entities: [Alert, Answer, Form, Message, Person, Question, Team]

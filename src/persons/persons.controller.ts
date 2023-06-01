@@ -28,4 +28,9 @@ export class PersonsController {
     console.log(personId)
     return this.personsService.setTeam(teamId, personId);
   }
+
+  @Get(`me/:id`)
+  me(@Param("id") id: number) {
+    return this.personsService.findMe(id);
+  }
 }

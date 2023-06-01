@@ -54,4 +54,12 @@ export class PersonsService {
       console.log(error)
     }
   }
+
+  async findMe(id: number) {
+    try {
+      return await this.personRepository.findOne({where: { id: id }, relations: ["team", "team.members"]});
+    } catch (error) {
+      console.log(error)
+    }
+  }
 }
