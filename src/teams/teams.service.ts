@@ -50,6 +50,7 @@ export class TeamsService {
   async findOne(id: number) {
     try {
       return await this.teamRepository.findOne({
+        relations: ["members", "rh", "manager"],
         where: {
           id: id
         }
@@ -62,7 +63,7 @@ export class TeamsService {
   async findOneByMemberId(memberId: number) {
     try {
       const user = await this.personRepository.findOne({
-        relations: ["team", "team.members"],
+        relations: ["team", "team.members", "team.rh", "team.manager"],
         where: {
           id: memberId
         }
