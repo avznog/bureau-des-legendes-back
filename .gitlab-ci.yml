@@ -48,9 +48,9 @@ deploy-main:
   script:
     - bash -c "ssh-add <(echo \"$SSH_PRIVATE_KEY\")"
     - export COMPOSE_HTTP_TIMEOUT=200
-    - ssh root@$HOST "docker-compose -f ~/docker-compose.yml down --remove-orphans"
-    - ssh root@$HOST "docker-compose -f ~/docker-compose.yml pull"
-    - ssh root@$HOST "docker-compose -f ~/docker-compose.yml up -d"
+    - ssh root@$HOST "docker compose -f ~/docker-compose.yml down --remove-orphans"
+    - ssh root@$HOST "docker compose -f ~/docker-compose.yml pull"
+    - ssh root@$HOST "docker compose -f ~/docker-compose.yml up -d"
   dependencies:
     - build-main
   only:
