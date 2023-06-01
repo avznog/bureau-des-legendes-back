@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Team } from './entities/team.entity';
 import { Repository } from 'typeorm';
 import { Person } from 'src/persons/entities/person.entity';
+import { UpdatePersonDto } from 'src/persons/dto/update-person.dto';
 
 @Injectable()
 export class TeamsService {
@@ -19,7 +20,13 @@ export class TeamsService {
 
   async create(createTeamDto: CreateTeamDto) {
     try {
-      return await this.teamRepository.save(createTeamDto);
+      const newTeam = await this.teamRepository.save(createTeamDto);
+      const updatePersonDto : UpdatePersonDto = {
+        teamId: newTeam.id
+      }
+      await this.personRepository.update(createTeamDto.managerId, { team: newTeam});
+      await this.personRepository.update(createTeamDto.rhId, { team: newTeam });
+      return newTeam;
     } catch (error) {
       console.log(error)
     }
@@ -49,13 +56,12 @@ export class TeamsService {
 
   async findOneByMemberId(memberId: number) {
     try {
-      const user =  await this.personRepository.findOne({
-        relations: ["team"],
+      const user = await this.personRepository.findOne({
+        relations: ["team", "team.members"],
         where: {
           id: memberId
         }
       });
-
       return user.team;
     } catch (error) {
       console.log(error)
