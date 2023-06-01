@@ -27,7 +27,7 @@ import { ConfigModule } from '@nestjs/config';
       port: +process.env.POSTGRES_PORT,
       username: process.env.POSTGRES_USER || "postgres",
       password: process.env.POSTGRES_PASSWORD || "postgres",
-      database: 'dev2',
+      database: process.env.POSTGRES_DATABASE || "dev2",
       synchronize: true,
       autoLoadEntities: true,
       entities: [Alert, Answer, Form, Message, Person, Question, Team]
