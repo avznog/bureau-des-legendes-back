@@ -1,0 +1,57 @@
+stages:
+  - build
+  - docker
+  - deploy
+
+#BUILD STAGE
+
+build-main:
+  stage: build
+  image: node:16.13-alpine
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - .yarn/
+      - yarn.lock
+  script:
+    - yarn install --immutable --silent
+    - yarn run build
+  artifacts:
+    paths:
+      - dist/
+  only:
+    - main
+
+docker-main:
+  stage: docker
+  image: docker:latest
+  before_script:
+    - docker login -u $DOCKERLOGIN -p $DOCKERTOKEN $CI_REGISTRY
+  script:
+    - docker build --tag $CI_IMAGE_BACK:main .
+    - docker push $CI_IMAGE_BACK:main
+  dependencies:
+    - build-main
+  only:
+    - main
+
+deploy-main:
+  stage: deploy
+  before_script:
+    - "which ssh-agent || (apk update && apk add openssh-client bash curl)"
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    
+  script:
+    - bash -c "ssh-add <(echo \"$SSH_PRIVATE_KEY\")"
+    - export COMPOSE_HTTP_TIMEOUT=200
+    - ssh root@$HOST "docker-compose -f ~/docker-compose.yml down --remove-orphans"
+    - ssh root@$HOST "docker-compose -f ~/docker-compose.yml pull"
+    - ssh root@$HOST "docker-compose -f ~/docker-compose.yml up -d"
+  dependencies:
+    - build-main
+  only:
+    - main
