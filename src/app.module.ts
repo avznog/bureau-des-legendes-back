@@ -17,6 +17,7 @@ import { Person } from './persons/entities/person.entity';
 import { Question } from './questions/entities/question.entity';
 import { Team } from './teams/entities/team.entity';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
       entities: [Alert, Answer, Form, Message, Person, Question, Team]
     }),
+    ConfigModule.forRoot(),
     AlertsModule,
     AnswersModule,
     FormsModule,
