@@ -10,11 +10,11 @@ export class Team {
   @Column()
   name: string;
 
-  @OneToOne(() => Person, person => person.team)
+  @OneToOne(() => Person, person => person.team, {cascade: true})
   @JoinColumn()
   rh: Person;
 
-  @OneToOne(() => Person, person => person.team)
+  @OneToOne(() => Person, person => person.team, {cascade: true})
   @JoinColumn()
   manager: Person;
 

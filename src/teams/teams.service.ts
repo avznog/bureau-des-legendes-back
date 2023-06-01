@@ -20,10 +20,15 @@ export class TeamsService {
 
   async create(createTeamDto: CreateTeamDto) {
     try {
-      const newTeam = await this.teamRepository.save(createTeamDto);
-      const updatePersonDto : UpdatePersonDto = {
-        teamId: newTeam.id
-      }
+      const newTeam = await this.teamRepository.save({
+        ...createTeamDto,
+        manager: {
+          id: createTeamDto.managerId
+        },
+        rh: {
+          id: createTeamDto.rhId
+        }
+      });
       await this.personRepository.update(createTeamDto.managerId, { team: newTeam});
       await this.personRepository.update(createTeamDto.rhId, { team: newTeam });
       return newTeam;
@@ -35,7 +40,7 @@ export class TeamsService {
   async findAll() {
     try {
       return await this.teamRepository.find({
-        relations: ["members"]
+        relations: ["members", "rh", "manager"]
       })
     } catch (error) {
       console.log(error)
