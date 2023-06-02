@@ -1,4 +1,4 @@
-import { Role } from "src/constants/role.type";
+import { Role } from 'src/constants/role.type';
 
 export interface RegisterDto {
   role: Role;
