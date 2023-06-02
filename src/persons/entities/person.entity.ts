@@ -35,7 +35,7 @@ export class Person {
   team: Team;
 
   @OneToMany(() => Alert, alert => alert.filler)
-  filledAlert: Alert[];
+  filledAlerts: Alert[];
 
   @OneToMany(() => Alert, alert => alert.reviewer)
   reviewedAlerts: Alert[];

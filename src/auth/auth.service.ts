@@ -1,12 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { RegisterDto } from "./register.dto";
-import { LoginDto } from "./login.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { Person } from "src/persons/entities/person.entity";
 import * as bcrypt from 'bcrypt';
+import { Person } from "src/persons/entities/person.entity";
+import { Repository } from "typeorm";
+import { LoginDto } from "./login.dto";
+import { RegisterDto } from "./register.dto";
 import { ReturnLoginDto } from "./returnLogin.dto";
-import { Role } from "src/constants/role.type";
 
 @Injectable()
 export class AuthService {
@@ -19,7 +18,7 @@ export class AuthService {
   async login(loginDto: LoginDto) : Promise<ReturnLoginDto> {
     try {
       const user = await this.personRepository.findOne({
-        relations: ["team"],
+        relations: ["team", "filledAlerts"],
         where: {
           email: loginDto.email
         }

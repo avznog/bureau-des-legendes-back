@@ -1,26 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateQuestionDto } from './dto/create-question.dto';
-import { UpdateQuestionDto } from './dto/update-question.dto';
+import { Question } from './entities/question.entity';
 
 @Injectable()
 export class QuestionsService {
-  create(createQuestionDto: CreateQuestionDto) {
-    return 'This action adds a new question';
-  }
 
-  findAll() {
-    return `This action returns all questions`;
-  }
+  constructor(
+    @InjectRepository(Question)
+    private readonly questionRepository: Repository<Question>
+  ) {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
-  }
-
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} question`;
+  createMultiple(createQuestionsService: CreateQuestionDto[]) {
+    try {
+      createQuestionsService.forEach(async createQuestionService => {
+        await this.questionRepository.save({
+          ...createQuestionService,
+          form: {
+            id: createQuestionService.form.id
+          },
+        })
+      });
+      return true;
+    } catch (error) {
+      console.log(error)
+      throw new HttpException("Failed create multiple quesitons", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
