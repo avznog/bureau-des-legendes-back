@@ -13,6 +13,7 @@ export class FormsService {
   async byTeamId(teamId: number) {
     try {
       return await this.formRepository.find({
+        relations: ["questions"],
         where: {
           team: {
             id: teamId

@@ -14,7 +14,7 @@ export class Form {
   @Column()
   creationDate: Date;
 
-  @Column()
+  @Column({nullable: true, type: "varchar"})
   type: FormType;
 
   @ManyToOne(() => Form)
