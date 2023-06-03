@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
 import { CreateAlertDto } from './dto/create-alert.dto';
 
@@ -10,4 +10,10 @@ export class AlertsController {
   create(@Body() createAlertDto: CreateAlertDto) {
     return this.alertsService.create(createAlertDto);
   }
+
+  @Get("by-filler/:filledId")
+  findByFillerId(@Param("filledId") fillerId: number) {
+    return this.alertsService.findByFillerId(fillerId);
+  }
+
 }

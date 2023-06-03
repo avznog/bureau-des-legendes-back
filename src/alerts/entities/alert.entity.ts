@@ -19,7 +19,7 @@ export class Alert {
   @Column()
   sendMail: boolean;
 
-  @Column()
+  @Column({type: "varchar", nullable: true})
   status: Status;
 
   @ManyToOne(() => Person)
