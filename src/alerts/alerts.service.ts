@@ -40,7 +40,7 @@ export class AlertsService {
   async findByReviewerId(reviewerId: number) {
     try {
       return await this.alertRepository.find({
-        relations: ["reviewer", "form"],
+        relations: ["reviewer", "form", "filler"],
         where: {
           reviewer: {
             id: reviewerId
