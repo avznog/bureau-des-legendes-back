@@ -9,57 +9,58 @@ import { ReturnLoginDto } from "./returnLogin.dto";
 
 @Injectable()
 export class AuthService {
-
   constructor(
     @InjectRepository(Person)
-    private readonly personRepository: Repository<Person>
+    private readonly personRepository: Repository<Person>,
   ) {}
 
-  async login(loginDto: LoginDto) : Promise<ReturnLoginDto> {
+  async login(loginDto: LoginDto): Promise<ReturnLoginDto> {
     try {
       const user = await this.personRepository.findOne({
         relations: ["team", "filledAlerts"],
         where: {
-          email: loginDto.email
-        }
+          email: loginDto.email,
+        },
       });
-      if(user && await bcrypt.compare(loginDto.password, user.password)) {
+      if (user && (await bcrypt.compare(loginDto.password, user.password))) {
         return {
           person: {
             ...user,
-            password: ""
+            password: '',
           },
-          authorized: true
-        } 
+          authorized: true,
+        };
       } else {
         return {
           person: {} as Person,
-          authorized: false
-        }
+          authorized: false,
+        };
       }
     } catch (error) {
       console.log(error);
-      throw new HttpException("login failed", HttpStatus.UNAUTHORIZED);
+      throw new HttpException('login failed', HttpStatus.UNAUTHORIZED);
     }
   }
 
   async register(registerDto: RegisterDto) {
     try {
-      if(await this.personRepository.exist({
-        where: {
-          email: registerDto.email
-        }
-      })) {
-        throw new HttpException("User already exists", HttpStatus.BAD_REQUEST);
+      if (
+        await this.personRepository.exist({
+          where: {
+            email: registerDto.email,
+          },
+        })
+      ) {
+        throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
       } else {
         return await this.personRepository.save({
           ...registerDto,
-          password: await bcrypt.hash(registerDto.password, 10)
+          password: await bcrypt.hash(registerDto.password, 10),
         });
       }
     } catch (error) {
-      console.log(error)
-      throw new HttpException("registration failed", HttpStatus.UNAUTHORIZED)
+      console.log(error);
+      throw new HttpException('registration failed', HttpStatus.UNAUTHORIZED);
     }
   }
 }

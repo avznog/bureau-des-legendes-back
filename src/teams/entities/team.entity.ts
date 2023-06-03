@@ -7,7 +7,7 @@ export class Team {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({nullable: true})
   name: string;
 
   @OneToOne(() => Person, person => person.team, {cascade: true})
