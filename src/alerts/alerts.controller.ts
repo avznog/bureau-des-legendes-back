@@ -6,18 +6,19 @@ import { CreateAlertDto } from './dto/create-alert.dto';
 export class AlertsController {
   constructor(private readonly alertsService: AlertsService) {}
 
-  @Get('by-reviewer-id/:reviewerId')
-  findByReviewerId(@Param('reviewerId') reviewerId: number) {
-    return this.alertsService.findByReviewerId(reviewerId);
-  }
-
-  @Get('by-filler-id/:fillerId')
-  findByFillerId(@Param('fillerId') fillerId: number) {
-    return this.alertsService.findByFillerId(fillerId);
-  }
-
   @Post()
   create(@Body() createAlertDto: CreateAlertDto) {
     return this.alertsService.create(createAlertDto);
   }
+
+  @Get("by-filler/:filledId")
+  findByFillerId(@Param("filledId") fillerId: number) {
+    return this.alertsService.findByFillerId(fillerId);
+  }
+
+  @Get("by-reviewer/:reviewerId")
+  findByReviewerId(@Param("reviewerId") reviewerId: number) {
+    return this.alertsService.findByReviewerId(reviewerId);
+  }
+
 }

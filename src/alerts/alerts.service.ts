@@ -4,6 +4,7 @@ import { Alert } from './entities/alert.entity';
 import { Repository } from 'typeorm';
 import { CreateAlertDto } from './dto/create-alert.dto';
 import { Person } from 'src/persons/entities/person.entity';
+import { Status } from 'src/constants/status.type';
 
 @Injectable()
 export class AlertsService {
@@ -19,6 +20,7 @@ export class AlertsService {
     try {
       return await this.alertRepository.save({
         ...createAlertDto,
+        status: Status.STARTED,
         filler: {
           id: createAlertDto.fillerId,
         },
@@ -37,45 +39,32 @@ export class AlertsService {
 
   async findByReviewerId(reviewerId: number) {
     try {
-      const user = await this.personRepository.findOne({
-        relations: [
-          'reviewedAlerts',
-          'reviewedAlerts.form',
-          'reviewedAlerts.form.creator',
-        ],
+      return await this.alertRepository.find({
+        relations: ["reviewer", "form"],
         where: {
-          id: reviewerId,
-        },
+          reviewer: {
+            id: reviewerId
+          }
+        }
       });
-      return user;
     } catch (error) {
       console.log(error);
-      throw new HttpException(
-        'Finding reviewer failed',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
     }
   }
 
   async findByFillerId(fillerId: number) {
     try {
-      const user = await this.personRepository.findOne({
-        relations: [
-          'filledAlerts',
-          'filledAlerts.form',
-          'filledAlerts.form.creator',
-        ],
+      return await this.alertRepository.find({
+        relations: ["filler", "reviewer", "form"],
         where: {
-          id: fillerId,
-        },
+          filler: {
+            id: fillerId
+          }
+        }
       });
-      return user;
     } catch (error) {
       console.log(error);
-      throw new HttpException(
-        'Finding filler failed',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException("Failed", HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 }
