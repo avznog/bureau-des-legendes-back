@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
@@ -27,8 +27,8 @@ export class TeamsController {
     return this.teamsService.update(+id, updateTeamDto);
   }
 
-  @Get("by-member-id/:memberId")
-  findOneByMemberId(@Param("memberId") memberId: number) {
+  @Get('by-member-id/:memberId')
+  findOneByMemberId(@Param('memberId') memberId: number) {
     return this.teamsService.findOneByMemberId(memberId);
   }
 }
