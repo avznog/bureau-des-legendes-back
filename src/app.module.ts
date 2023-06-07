@@ -24,11 +24,10 @@ import { ConversationsModule } from './conversations/conversations.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.POSTGRES_HOST || 'localhost' || '192.168.0.244',
+      host: process.env.POSTGRES_HOST || 'localhost',
       port: +process.env.POSTGRES_PORT || 5432,
       username: process.env.POSTGRES_USER || 'postgres',
-      password:
-        process.env.POSTGRES_PASSWORD || 'R0xwe331SEoZoYa' || 'postgres',
+      password: process.env.POSTGRES_PASSWORD || 'R0xwe331SEoZoYa',
       database: process.env.POSTGRES_DATABASE || 'bureaudeslegendes',
       synchronize: true,
       autoLoadEntities: true,
