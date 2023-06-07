@@ -3,7 +3,7 @@ import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Team } from './entities/team.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Person } from 'src/persons/entities/person.entity';
 import { UpdatePersonDto } from 'src/persons/dto/update-person.dto';
 
@@ -63,13 +63,26 @@ export class TeamsService {
 
   async findOneByMemberId(memberId: number) {
     try {
-      const user = await this.personRepository.findOne({
-        relations: ['team', 'team.members', 'team.rh', 'team.manager'],
-        where: {
-          id: memberId,
-        },
+      return await this.teamRepository.findOne({
+        relations: ['members', 'rh', 'manager'],
+        where: [
+          {
+            rh: {
+              id: memberId,
+            },
+          },
+          {
+            manager: {
+              id: memberId,
+            },
+          },
+          {
+            members: {
+              id: In([memberId]),
+            },
+          },
+        ],
       });
-      return user.team;
     } catch (error) {
       console.log(error);
       throw new HttpException(
