@@ -17,7 +17,6 @@ export class ConversationsGateway {
 
   @SubscribeMessage('message')
   async handleMessage(@MessageBody() createMessageDto): Promise<void> {
-    console.log(createMessageDto);
     const newMessage = await this.messageService.create(createMessageDto);
     this.server.emit('message', newMessage);
   }
