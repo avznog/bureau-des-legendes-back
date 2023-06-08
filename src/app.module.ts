@@ -18,16 +18,17 @@ import { Message } from './messages/entities/message.entity';
 import { Person } from './persons/entities/person.entity';
 import { Question } from './questions/entities/question.entity';
 import { Team } from './teams/entities/team.entity';
+import { ConversationsModule } from './conversations/conversations.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.POSTGRES_HOST || "192.168.0.244",
+      host: process.env.POSTGRES_HOST || 'localhost',
       port: +process.env.POSTGRES_PORT || 5432,
-      username: process.env.POSTGRES_USER || "postgres",
-      password: process.env.POSTGRES_PASSWORD || "postgres",
-      database: process.env.POSTGRES_DATABASE || "bureaudeslegendes",
+      username: process.env.POSTGRES_USER || 'postgres',
+      password: process.env.POSTGRES_PASSWORD || 'R0xwe331SEoZoYa',
+      database: process.env.POSTGRES_DATABASE || 'bureaudeslegendes',
       synchronize: true,
       autoLoadEntities: true,
       entities: [Alert, Answer, Form, Message, Person, Question, Team],
@@ -41,6 +42,7 @@ import { Team } from './teams/entities/team.entity';
     QuestionsModule,
     TeamsModule,
     AuthModule,
+    ConversationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

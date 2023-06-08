@@ -40,12 +40,18 @@ export class AlertsService {
   async findByReviewerId(reviewerId: number) {
     try {
       return await this.alertRepository.find({
-        relations: ["reviewer", "form", "filler"],
+        relations: [
+          'filler',
+          'reviewer',
+          'form',
+          'messages',
+          'messages.sender',
+        ],
         where: {
           reviewer: {
-            id: reviewerId
-          }
-        }
+            id: reviewerId,
+          },
+        },
       });
     } catch (error) {
       console.log(error);
@@ -55,16 +61,22 @@ export class AlertsService {
   async findByFillerId(fillerId: number) {
     try {
       return await this.alertRepository.find({
-        relations: ["filler", "reviewer", "form"],
+        relations: [
+          'filler',
+          'reviewer',
+          'form',
+          'messages',
+          'messages.sender',
+        ],
         where: {
           filler: {
-            id: fillerId
-          }
-        }
+            id: fillerId,
+          },
+        },
       });
     } catch (error) {
       console.log(error);
-      throw new HttpException("Failed", HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException('Failed', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

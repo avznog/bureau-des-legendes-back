@@ -11,14 +11,13 @@ export class AlertsController {
     return this.alertsService.create(createAlertDto);
   }
 
-  @Get("by-filler/:filledId")
-  findByFillerId(@Param("filledId") fillerId: number) {
+  @Get('by-filler/:fillerId')
+  findByFillerId(@Param('fillerId') fillerId: number) {
     return this.alertsService.findByFillerId(fillerId);
   }
 
-  @Get("by-reviewer/:reviewerId")
-  findByReviewerId(@Param("reviewerId") reviewerId: number) {
+  @Get('by-reviewer/:reviewerId')
+  findByReviewerId(@Param('reviewerId') reviewerId: number) {
     return this.alertsService.findByReviewerId(reviewerId);
   }
-
 }
