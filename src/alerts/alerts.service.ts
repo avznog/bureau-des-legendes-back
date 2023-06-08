@@ -52,6 +52,11 @@ export class AlertsService {
             id: reviewerId,
           },
         },
+        order: {
+          messages: {
+            date: "asc"
+          }
+        }
       });
     } catch (error) {
       console.log(error);
@@ -73,6 +78,11 @@ export class AlertsService {
             id: fillerId,
           },
         },
+        order: {
+          messages: {
+            date: "asc"
+          }
+        }
       });
     } catch (error) {
       console.log(error);
