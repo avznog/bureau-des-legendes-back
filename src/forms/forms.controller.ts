@@ -16,4 +16,9 @@ export class FormsController {
     return this.formsService.create(createFormDto);
   }
 
+  @Get("find-one/:id")
+  findOne(@Param("id") id: number) {
+    return this.formsService.findOne(id);
+  }
+
 }

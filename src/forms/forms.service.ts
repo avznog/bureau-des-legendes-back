@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFormDto } from './dto/create-form.dto';
@@ -40,6 +40,20 @@ export class FormsService {
       });
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async findOne(id: number) {
+    try {
+      return await this.formRepository.findOne({
+        relations: ["questions", "answers", "answers.question"],
+        where: {
+          id: id
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      throw new HttpException("Failed", HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 }
